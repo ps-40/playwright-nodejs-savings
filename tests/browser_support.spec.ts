@@ -1,5 +1,28 @@
 import {test, chromium, webkit,firefox} from '@playwright/test'
 
+test('Check the browser', async({browser}, testInfo) => { //mysle ze najlepsza opcja, odpala na trzech przegladarkach
+    const browserType = browser.browserType();
+    const page = await browser.newPage();
+
+    await page.goto('https://www.whatsmybrowser.org');
+
+    //zapisuje screenshot bezposrednio w projekcie playwright
+    await page.screenshot({path: `pw-${browserType.name()}.png`})
+    //zapisuej screenshot w folderze outputDir z .config
+    const screenshotpath = testInfo.outputPath(`${browserType.name()}.png`);
+    await page.screenshot({path: screenshotpath});
+
+    console.log('Browser running:', browserType.name());
+    //console.log('Browser running:', browser.browserType().name());
+
+
+    await page.close(); //musi byc w tej kolejnosci bo nie zamknie
+    await browser.close(); //jak jest async({browser}) to sam zamknie przegladarke ale jak jest testInfo
+    //to mjusi byc browser.close() bo inaczej dlugo mieli 
+    
+    //tutaj mozna uruchomic rozne przegladarki podczas odpalania testu - w projects playwright.config
+});
+/*
 test('Check three browsers', async() => {
     
     for (const browserType of [chromium, webkit, firefox]) {
@@ -10,28 +33,14 @@ test('Check three browsers', async() => {
         const page = await context.newPage();
 
         await page. goto('https://www.whatsmybrowser.org');
-        await page.screenshot({path: `pw-${browserType.name()}.png`});//zapisuje plik w prokekcie palywright
+        await page.screenshot({path: `pw-${browserType.name()}.png`});//zapisuje plik w prokekcie playwright
 
         await browser.close();
 
     }
 }); //nie dziala, otwiera trzy przegladarki ale w kazdej pokazuje "you're using Chrome"
     //firefox czasem sie wywala, moze parallel pomoze
-test('Check the browser', async({browser}) => {
-    const browserType = browser.browserType();
-    const page = await browser.newPage();
 
-    await page.goto('https://www.whatsmybrowser.org');
-    //await page.screenshot({path: `pw-${browserType.name()}1.png`})
-    console.log('Browser running:', browserType.name());
-    //console.log('Browser running:', browser.browserType().name());
-
-
-    await page.close(); //musi byc w tej kolejnosci bo nie zamknie
-    //await browser.close(); jak jest async({browser}) to sam zamknie przegladarke 
-    
-    //tutaj mozna uruchomic rozne przegladarki podczas odpalania testu - w projects playwright.config
-});
 test('check three browsers with userAgent', async() => {
 
     const browsers = [
@@ -58,9 +67,12 @@ test('check three browsers with userAgent', async() => {
       }
       
 }); //podaje userAgent ale nie jestem przekonana, jaki sie poda ua taki wyswietli na stronie
+
+
+
 // test('Check the browser', async ({ browser }, testInfo) => {
 // //....
 // //sciezka dla screenshot, zapisuje w pliku outputPath
 // const screenshotPath = testInfo.outputPath(`pw-name.png`); 
 //     await page.screenshot({ path: screenshotPath });
-
+*/
