@@ -3,7 +3,7 @@ import {test, chromium, webkit,firefox} from '@playwright/test'
 test('Check three browsers', async() => {
     
     for (const browserType of [chromium, webkit, firefox]) {
-        console.log('Running:', browserType.name());
+        console.log('Running three browsers:', browserType.name());
 
         const browser = await browserType.launch();
         const context = await browser.newContext();
@@ -11,13 +11,12 @@ test('Check three browsers', async() => {
 
         await page. goto('https://www.whatsmybrowser.org');
         await page.screenshot({path: `pw-${browserType.name()}.png`});//zapisuje plik w prokekcie palywright
-        console.log('Running:', browserType.name());
 
         await browser.close();
 
     }
 }); //nie dziala, otwiera trzy przegladarki ale w kazdej pokazuje "you're using Chrome"
-    //firefoz czasem sie wywala, moze parallel pomoze
+    //firefox czasem sie wywala, moze parallel pomoze
 test('Check the browser', async({browser}) => {
     const browserType = browser.browserType();
     const page = await browser.newPage();
@@ -52,11 +51,16 @@ test('check three browsers with userAgent', async() => {
         const page = await context.newPage();
 
         await page.goto('https://www.whatsmybrowser.org');
-        console.log("Browser running:", browserType.name());
+        console.log("Browser running with userAgent:", browserType.name());
 
         await page.close();
         await browser.close();
       }
       
 }); //podaje userAgent ale nie jestem przekonana, jaki sie poda ua taki wyswietli na stronie
+// test('Check the browser', async ({ browser }, testInfo) => {
+// //....
+// //sciezka dla screenshot, zapisuje w pliku outputPath
+// const screenshotPath = testInfo.outputPath(`pw-name.png`); 
+//     await page.screenshot({ path: screenshotPath });
 
