@@ -3,7 +3,6 @@ import {test, chromium, webkit,firefox} from '@playwright/test'
 test('Check the browser', async({browser}, testInfo) => { //mysle ze najlepsza opcja, odpala na trzech przegladarkach
     const browserType = browser.browserType();
     const page = await browser.newPage();
-
     await page.goto('https://www.whatsmybrowser.org');
 
     //zapisuje screenshot bezposrednio w projekcie playwright
@@ -30,7 +29,7 @@ test('Check three browsers', async() => {
 
         const browser = await browserType.launch();
         const context = await browser.newContext();
-        const page = await context.newPage();
+        const page = await context.newPage();        
 
         await page. goto('https://www.whatsmybrowser.org');
         await page.screenshot({path: `pw-${browserType.name()}.png`});//zapisuje plik w prokekcie playwright
